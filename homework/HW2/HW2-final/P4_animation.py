@@ -17,7 +17,7 @@ minute_len = 2
 second_len = 2.5
 fig = plt.figure(figsize=(6,6))
 fig.canvas.draw()
-while count < 10:
+while count < 100:
     currentDT = datetime.datetime.now()
     hour = currentDT.hour
     minute = currentDT.minute
