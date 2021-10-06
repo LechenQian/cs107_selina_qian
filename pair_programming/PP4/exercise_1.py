@@ -1,3 +1,4 @@
+Sharer: Selina Qian; Coder: Selina Qian
 import numpy as np
 
 def layer(shape,actv):
@@ -8,12 +9,17 @@ def layer(shape,actv):
 
     return inner
 if __name__ == "__main__":
-    t = np.random.uniform(0.0, 1.0, 100).reshape(1,-1) # input to the network
-    shape1 = [100,50]
-    shape2 = [50,1]
+    N = 100 
+    W = 3 
+    C = 1 
 
-    layer1 = layer(shape1, np.tanh) # Define layer 1
-    layer2 = layer(shape2, np.tanh) # Define layer 2
+    t = np.random.uniform(0.0, 1.0, 100).reshape(1,-1) # Input data
+
+    shape1 = [np.size(t), W] # Size of layer 1
+    layer1 = layer(shape1, np.tanh) # Instantiate layer 1
+    
+    shape2 = [W, C] # Size of layer 2 (it's the output layer here)
+    layer2 = layer(shape2, np.tanh) # Instantiate layer 2
 
     # Initialize weights and biases
     w1 = np.random.normal(0, 0.5, size=(shape1[0], shape1[1]))
