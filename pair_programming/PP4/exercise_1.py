@@ -1,4 +1,6 @@
-Sharer: Selina Qian; Coder: Selina Qian
+# PP4
+# 2021-10-05
+#Sharer: Selina Qian; Coder: Selina Qian
 import numpy as np
 
 def layer(shape,actv):
