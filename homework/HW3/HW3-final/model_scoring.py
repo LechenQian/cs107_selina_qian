@@ -29,7 +29,7 @@ for model in models:
 # print(reg.coef_)
 # print(reg.intercept_)
 #
-# ridge = Ridge(alpha=1.0).fit(X_train,y_train)
+# ridge = Ridge(alpha=0.1).fit(X_train,y_train)
 # print(ridge.score(X_train,y_train))
 # print(ridge.coef_)
 # print(ridge.intercept_)

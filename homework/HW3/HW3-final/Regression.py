@@ -51,10 +51,17 @@ class RidgeRegression(Regression):
         self.alpha = alpha
 
     def fit(self, x, y):
-        X = np.append(x, [[1]] * len(y), axis=1)
-        M = self.alpha * np.eye(X.shape[1])
-        Beta = np.dot(np.linalg.pinv(np.dot(X.T, X) + np.dot(M.T, M)), np.dot(X.T, y))
 
-        self.params['coef'] = Beta[:-1]
-        self.params['intercept'] = Beta[-1]
-        # return self.params['coef'], self.params['intercept']
+        # center and scale data
+        ymean = np.mean(y)
+        Xmean = np.mean(x, axis=0)
+        scale = 1 / np.sqrt(np.sum((x - Xmean) ** 2, axis=0))
+        Xs = (x - Xmean) * scale
+        ys = y - ymean
+
+        gamma = self.alpha * np.identity(Xs.shape[1])
+        beta = np.linalg.pinv(Xs.T.dot(Xs) + gamma.T.dot(gamma)).dot(
+            Xs.T).dot(ys)
+        beta *= scale
+        self.params['coef'] = beta
+        self.params['intercept'] = ymean - Xmean.dot(beta)
