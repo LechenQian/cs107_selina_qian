@@ -39,7 +39,7 @@ def test_over_getbalance():  # this test function should throw an Exception or E
     except Exception as e:
         print(e);  # print the message for the Exeption
 # tests
-test_over_withdrawal();
+test_over_withdrawal()
 test_over_dup_account()
 test_over_neg_deposit()
 test_over_getbalance()
@@ -54,5 +54,6 @@ print(user)
 
 # test interface
 Selina = BankUser("Selina")
-a = ATMSession(Selina)
+Interface = ATMSession(Selina)
+Interface()
 
