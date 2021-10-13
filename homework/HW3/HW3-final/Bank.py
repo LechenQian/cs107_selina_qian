@@ -90,27 +90,42 @@ def ATMSession(bankUser):
                 input('Enter Option:\n 1)Exit \n 2)Create Account \n 3)Check Balance \n 4)Deposit \n 5)Withdraw'))
             if option == 1:
                 break
-            else:
+            elif option in [2,3,4,5]:
                 account = int(input('Enter Option:\n 1)Checking \n 2) Savings'))
                 if option == 2:
-                    bankUser.addAccount(AccountType.SAVINGS if account == 2 else AccountType.CHECKING)
-                    print(
-                        AccountType.SAVINGS.name if account == 2 else AccountType.CHECKING.name + ' account has been created!')
+                    try:
+                        bankUser.addAccount(AccountType.SAVINGS if account == 2 else AccountType.CHECKING)
+                        print(
+                            AccountType.SAVINGS.name if account == 2 else AccountType.CHECKING.name + ' account has been created!')
+                    except Exception as e:
+                        print(e)
+
                 elif option == 3:
-                    print(bankUser.getBalance(AccountType.SAVINGS if account == 2 else AccountType.CHECKING))
+                    try:
+                        print(bankUser.getBalance(AccountType.SAVINGS if account == 2 else AccountType.CHECKING))
+                    except Exception as e:
+                        print(e)
 
                 elif option in [4, 5]:
                     amount = int(input('Enter Integer Amount, Cannot Be Negative:'))
                     if option == 4:
-                        bankUser.deposit(AccountType.SAVINGS if account == 2 else AccountType.CHECKING, amount)
-                        print('Now you have ' + str(
-                            bankUser.getBalance(AccountType.SAVINGS if account == 2 else AccountType.CHECKING))
-                        + ' in this account.')
+                        try:
+                            bankUser.deposit(AccountType.SAVINGS if account == 2 else AccountType.CHECKING, amount)
+                            print('Now you have ' + str(
+                                bankUser.getBalance(AccountType.SAVINGS if account == 2 else AccountType.CHECKING))
+                            + ' in this account.')
+                        except Exception as e:
+                            print(e)
 
                     else:
-                        bankUser.withdraw(AccountType.SAVINGS if account == 2 else AccountType.CHECKING, amount)
-                        print('Now you have ' + str(
-                            bankUser.getBalance(AccountType.SAVINGS if account == 2 else AccountType.CHECKING))
-                        + ' in this account.')
+                        try:
+                            bankUser.withdraw(AccountType.SAVINGS if account == 2 else AccountType.CHECKING, amount)
+                            print('Now you have ' + str(
+                                bankUser.getBalance(AccountType.SAVINGS if account == 2 else AccountType.CHECKING))
+                            + ' in this account.')
+                        except Exception as e:
+                            print(e)
+            else:
+                print('Please enter 1-5.')
 
     return Interface
