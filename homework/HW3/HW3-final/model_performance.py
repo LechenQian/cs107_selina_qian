@@ -23,17 +23,18 @@ for alpha in alphas:
         params = model.get_params()
         beta = params['coef']
         intercept = params['intercept']
-        R2 = model.score(X_train, y_train)
+        R2 = model.score(X_test, y_test)
         if model.__class__.__name__ == 'LinearRegression':
             LinearR2s.append(R2)
         else:
             RidgeR2s.append(R2)
 ## figure
-plt.figure(figsize=(10, 5))
+plt.figure(figsize=(8, 5))
 plt.plot(alphas, LinearR2s, label='Linear Regression', color='r')
 plt.plot(alphas, RidgeR2s, label='Ridge Regression', color='b')
 plt.xlabel('alphas')
 plt.ylabel("R^2")
 plt.title('R^2  versus α in two types of regressions')
+plt.legend()
 plt.savefig('P2F.png')
 plt.show()

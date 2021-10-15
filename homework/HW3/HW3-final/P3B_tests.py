@@ -38,19 +38,19 @@ def test_over_getbalance():  # this test function should throw an Exception or E
         user.getBalance(AccountType.CHECKING);
     except Exception as e:
         print(e);  # print the message for the Exeption
-# tests
-test_over_withdrawal()
-test_over_dup_account()
-test_over_neg_deposit()
-test_over_getbalance()
-
-# test one user
-user = BankUser("Adam")
-user.addAccount(AccountType.CHECKING)
-user.deposit(AccountType.CHECKING, 1000)
-user.withdraw(AccountType.CHECKING, 10)
-print(user.getBalance(AccountType.CHECKING))
-print(user)
+# # tests
+# test_over_withdrawal()
+# test_over_dup_account()
+# test_over_neg_deposit()
+# test_over_getbalance()
+#
+# # test one user
+# user = BankUser("Adam")
+# user.addAccount(AccountType.CHECKING)
+# user.deposit(AccountType.CHECKING, 1000)
+# user.withdraw(AccountType.CHECKING, 10)
+# print(user.getBalance(AccountType.CHECKING))
+# print(user)
 
 # test interface
 Selina = BankUser("Selina")

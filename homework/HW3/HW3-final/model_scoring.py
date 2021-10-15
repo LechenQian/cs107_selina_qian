@@ -19,15 +19,15 @@ for model in models:
     params = model.get_params()
     beta = params['coef']
     intercept = params['intercept']
-    R2 = model.score(X_train, y_train)
+    R2 = model.score(X_test, y_test)
     print(
         f'The best coefficients of the {model.__class__.__name__}: \n {beta} \n and the intercept: \n {intercept} \n the R^2 is {R2}')
 
-# from sklearn.linear_model import LinearRegression,Ridge
-# reg = LinearRegression().fit(X_train, y_train)
-# print(reg.score(X_train, y_train))
-# print(reg.coef_)
-# print(reg.intercept_)
+from sklearn.linear_model import LinearRegression,Ridge
+reg = LinearRegression().fit(X_train, y_train)
+print(reg.score(X_test, y_test))
+print(reg.coef_)
+print(reg.intercept_)
 #
 # ridge = Ridge(alpha=0.1).fit(X_train,y_train)
 # print(ridge.score(X_train,y_train))
