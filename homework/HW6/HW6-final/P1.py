@@ -105,6 +105,83 @@ class DFSTraversalTypes(Enum):
     POSTORDER = 3
 
 
+class DFSTraversal():
+    def __init__(self, tree: BSTTable, traversalType: DFSTraversalTypes):
+        self.traversalType = traversalType
+        self.tree = tree
+
+    def __iter__(self):
+        self.ans = []
+        self.idx = 0
+        if self.traversalType == DFSTraversalTypes.PREORDER:
+            self.preorder(self.tree)
+        elif self.traversalType == DFSTraversalTypes.INORDER:
+            self.inorder(self.tree)
+        elif self.traversalType == DFSTraversalTypes.POSTORDER:
+            self.postorder(self.tree)
+        else:
+            raise ValueError
+        return self
+
+    def __next__(self):
+        if self.idx >= len(self.ans):
+            raise StopIteration
+        ans = self.ans[self.idx]
+        self.idx += 1
+        return ans
+
+    def inorder(self, bst: BSTTable):
+        lifo_q = []
+        root = bst._root
+        while root is not None:
+            lifo_q.append(root)
+            root = root.left
+        while len(lifo_q) > 0:
+            node = lifo_q.pop()
+            self.ans.append(node)
+            if node.right:
+                root = node.right
+                while root is not None:
+                    lifo_q.append(root)
+                    root = root.left
+
+    def preorder(self, bst: BSTTable):
+        lifo_q = []
+        root = bst._root
+        if root is not None:
+            lifo_q.append(root)
+        while len(lifo_q) > 0:
+            node = lifo_q.pop()
+            self.ans.append(node)
+            if node.right:
+                lifo_q.append(node.right)
+            if node.left:
+                lifo_q.append(node.left)
+
+    def postorder(self, bst: BSTTable):
+        lifo_q = []
+        root = bst._root
+        lifo_q.append(root)
+        prev = None
+        while len(lifo_q) > 0:
+            node = lifo_q[-1]
+            if node == None:
+                prev = lifo_q.pop()
+                continue
+            if node.left and prev != node.left and prev != node.right:
+                lifo_q.append(node.left)
+                prev = node
+                continue
+            if node.right and prev != node.right:
+                lifo_q.append(node.right)
+                prev = node
+                continue
+            node = lifo_q.pop()
+            prev = node
+            self.ans.append(node)
+
+
+
 
 
 
@@ -124,5 +201,12 @@ if __name__ == '__main__':
 #     #
 #     # tree.remove(10)
 #     # print(tree)
+    input_array = [(4, 'a'), (9, 'c'), (2, 'f'), (3, 'z'), (11, 'i'), (8, 'r')]
+    bst = BSTTable()
+    for key, val in input_array:
+        bst.put(key, val)
+    traversal = DFSTraversal(bst, DFSTraversalTypes.INORDER)
+    for node in traversal:
+        print(str(node.key) + ', ' + node.val)
 
 

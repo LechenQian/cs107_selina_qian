@@ -53,79 +53,73 @@ class Heap:
     def __len__(self) -> int:
         return self.size
 
+    def heapify(self, idx: int) -> None:
+        if idx >= self.size:
+            return
 
+        l = self.left(idx)
+        r = self.right(idx)
+        end_val = idx
+        if l < self.size and self.compare(self.elements[l],self.elements[idx]):
+            end_val = l
+
+        if r < self.size and self.compare(self.elements[r],self.elements[end_val]):
+            end_val = r
+        if end_val != idx:
+            self.swap(idx, end_val)
+            self.heapify(end_val)
 
     def build_heap(self) -> None:
-        for idx in range(floor(self.size//2)-1, -1, -1):
+        for idx in range(self.size//2, -1, -1):
             self.heapify(idx)
 
     def heappush(self, key: int) -> None:
+        def _heapify_up(idx):
+            curr_val = self.elements[idx]
+            parentIndex = self.parent(idx)
+            while idx > 0 and self.compare(curr_val, self.elements[parentIndex]):
+                self.elements[idx] = self.elements[parentIndex]
+                idx = parentIndex
+                parentIndex = self.parent(parentIndex)
+            self.elements[idx] = curr_val
+
         self.elements.append(key)
-        self.build_heap()
+        self.size += 1
+        _heapify_up(self.size-1)
+
 
 
     def heappop(self) -> int:
-        if len(self.elements) != 0:
-            return self.elements.pop(0)
-        else:
-            raise IndexError('Cannot get the minimum element in array since it does not exist.')
-        self.build_heap()
+        if self.size == 0:
+            raise IndexError()
+        removed_element = self.elements[0]
+        self.elements[0] = self.elements[-1]
+        self.elements.pop()
+        self.size -= 1
+        self.heapify(0)
+        return removed_element
+
+
 
     def compare(self, a: int, b: int) -> bool:
         raise NotImplementedError
 
 class MinHeap(Heap):
-    def __init__(self, array: List[int]):
-        super().__init__(array)
-
-    def heapify(self, idx: int) -> None:
-
-        l = self.left(idx)
-        r = self.right(idx)
-        if l < self.size and self.compare(self.elements[l],self.elements[idx]):
-            smallest = l
-        else:
-            smallest = idx
-        if r < self.size and self.compare(self.elements[r],self.elements[smallest]):
-            smallest = r
-        if smallest != idx:
-            self.swap(idx, smallest)
-            self.heapify(smallest)
 
     def compare(self, a: int, b: int) -> bool:
-        if a < b:
-            return True
-        else:
-            return False
+        return a < b
 
 
 class MaxHeap(Heap):
-    def __init__(self, array: List[int]):
-        super().__init__(array)
-
-    def heapify(self, idx: int) -> None:
-
-        l = self.left(idx)
-        r = self.right(idx)
-        if l < self.size and self.compare(self.elements[l],self.elements[idx]):
-            largest = l
-        else:
-            largest = idx
-        if r < self.size and self.compare(self.elements[r],self.elements[largest]):
-            largest = r
-        if largest != idx:
-            self.swap(idx, largest)
-            self.heapify(largest)
-
     def compare(self, a: int, b: int) -> bool:
-        if a > b:
-            return True
-        else:
-            return False
+        return a > b
+
 
 if __name__=='__main__':
-    h = MinHeap([-1, 0, 0, 15, 23, 1, 2, 3])  # The heap tree will be built during initialization
+    h = MaxHeap([-1, 0, 0, 15, 23, 1, 2, 3])  # The heap tree will be built during initialization
     print(h)
     h.heappush(4)
+    print(h)
     h.heappop()
     print(h)
+
