@@ -69,7 +69,7 @@ data = load_breast_cancer()
 X = pd.DataFrame(data.data, columns=data.feature_names)
 y = data.target
 
-
+# Split into train and test
 X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                     test_size=0.2, random_state=87)
 
@@ -79,21 +79,25 @@ baseline_model.fit(X_train, y_train)
 save_to_database(1, "Baseline model", db, baseline_model, X_train, X_test, y_train, y_test)
 
 # Fit the reduced logistic regression model
-features = ['mean radius', 'texture error', 'worst radius', 'worst compactness', 'worst concavity']
+feature_cols = ['mean radius',
+                'texture error',
+                'worst radius',
+                'worst compactness',
+                'worst concavity']
 
-X_train_reduced = X_train[features]
-X_test_reduced = X_test[features]
+X_train_reduced = X_train[feature_cols]
+X_test_reduced = X_test[feature_cols]
 
-red_model = LogisticRegression(solver='liblinear')
-red_model.fit(X_train_reduced, y_train)
-save_to_database(2, "Reduced model", db, red_model, X_train_reduced, X_test_reduced, y_train, y_test)
+reduced_model = LogisticRegression(solver='liblinear')
+reduced_model.fit(X_train_reduced, y_train)
+save_to_database(2, "Reduced model", db, reduced_model, X_train_reduced, X_test_reduced, y_train, y_test)
 
 # Logistic regression model with L1 penalty
 penal_model = LogisticRegression(solver='liblinear', penalty='l1', random_state=87, max_iter=150)
 penal_model.fit(X_train, y_train)
 save_to_database(3, "L1 penalty model", db, penal_model, X_train, X_test, y_train, y_test)
 
-# Part C: Database queries
+
 cursor = db.cursor()
 query = '''SELECT id, test_score FROM model_results WHERE test_score = (SELECT MAX(test_score) FROM model_results) '''
 model_info = cursor.execute(query).fetchall()
@@ -114,10 +118,10 @@ test_model = LogisticRegression(solver='liblinear')
 test_model.fit(X_train, y_train)
 
 # Manually change fit parameters
-best_coef = [row[1] for row in feature_info][:-1]
-best_intercept = feature_info[-1][1]
-test_model.coef_ = np.array([best_coef])
-test_model.intercept_ = np.array([best_intercept])
+coef = [row[1] for row in feature_info][:-1]
+intercept = feature_info[-1][1]
+test_model.coef_ = np.array([coef])
+test_model.intercept_ = np.array([intercept])
 
 # reproduce
 test_score = test_model.score(X_test, y_test)

@@ -30,8 +30,8 @@ class Markov:
 
     def _simulate_weather_for_day(self, day):
         if day < 0:
+            self._reset()
             raise Exception("Day is less than 0")
-        self._reset()
 
         if day == 0:
             return self._current_day_weather
@@ -46,13 +46,14 @@ class Markov:
 
         weathers = []
         for i in range(trials):
-            weathers.append(self._simulate_weather_for_day(int(day)))
+            temp = self._simulate_weather_for_day(int(day))
+            weathers.append(temp)
         return weathers
 
 
 class MarkovIterator:
-    def __init__(self, mk, day_zero_weather):
-        self.mk = mk
+    def __init__(self, obj, day_zero_weather):
+        self.mk = obj
         self.current = day_zero_weather
 
     def __iter__(self):
