@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Markov:
-    def __init__(self, day_zero_weather=None): # You will need to modify this header line later in Part C
+    def __init__(self, day_zero_weather=None):
         self.data = np.array([])
         self.d = {'sunny': 0, 'cloudy': 1, 'rainy': 2, 'snowy': 3, 'windy': 4, 'hailing': 5}
         self.day_zero_weather = day_zero_weather
@@ -14,9 +14,10 @@ class Markov:
 
     def get_prob(self, current_day_weather, next_day_weather):
         if current_day_weather not in self.d:
-            raise Exception("Current day not specified!")
+            raise Exception("Current day has not been specified!")
+
         if next_day_weather not in self.d:
-            raise Exception("Next day not specified!")
+            raise Exception("Next day has not been specified!")
 
         return self.data[self.d[current_day_weather], self.d[next_day_weather]]
 
@@ -29,21 +30,24 @@ class Markov:
 
     def _simulate_weather_for_day(self, day):
         if day < 0:
-            raise Exception("Day should not be less than 0!")
+            raise Exception("Day is less than 0")
         self._reset()
+
         if day == 0:
             return self._current_day_weather
-        for _ in range(day):
+
+        for num_day in range(day):
             next_weather = next(iter(self))
         return next_weather
 
     def get_weather_for_day(self, day, trials=100):
         if trials <= 0 or day < 0:
-            raise Exception("Day and trials should be non-negative!")
-        ans = []
+            raise Exception("Input should be non-negative")
+
+        weathers = []
         for i in range(trials):
-            ans.append(self._simulate_weather_for_day(day))
-        return ans
+            weathers.append(self._simulate_weather_for_day(int(day)))
+        return weathers
 
 
 class MarkovIterator:
